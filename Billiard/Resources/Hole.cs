@@ -12,10 +12,10 @@ public class Hole : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OntriggerEnter" + other.name);
+        //Debug.Log("OntriggerEnter" + other.name);
         if (other.tag == "BallTrigger")
         {
-            Debug.Log("BallTrigger");
+            //Debug.Log("BallTrigger");
             game = other.gameObject.transform.parent.gameObject;
 
             Destroy(game);
