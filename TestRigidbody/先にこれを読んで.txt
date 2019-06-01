@@ -1,0 +1,2 @@
+Packageから読み込める人はpackageから読み込んでください。
+読み込めない人はTestRigidbodyAssets配下のファイルから読み込んでください。
