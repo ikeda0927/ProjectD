@@ -5,16 +5,23 @@ using UnityEngine;
 public class TR_MovePosition : MonoBehaviour
 {
     // Start is called before the first frame update
+
     Rigidbody rb;
     const float force = 10f;
     public float weight = .5f;
     bool keyjudge = true;
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
-        //rb.MovePosition(rb.position + Vector3.forward * force);
-        //rb.MovePosition(new Vector3(18f, 1f, 9f));
     }
+
+    /*
+        デフォルトの設定では、isKinematicが有効で、
+        CollisionDetectionがContinuousSpeculativeに
+        なっており、ここら辺の設定をInspectorタブから変更
+        してみると、動作が変わってくるので試してみて
+    */
 
     // Update is called once per frame
     void Update()
@@ -23,8 +30,11 @@ public class TR_MovePosition : MonoBehaviour
         {
             if (keyjudge)
             {
+                //一回のキー押下で一回のみ呼ばれるようにするため
                 keyjudge = false;
-                rb.MovePosition(new Vector3(rb.position.x + weight, rb.position.y, rb.position.z));
+
+                //現在の位置から右にweight分移動
+                rb.MovePosition(rb.position + Vector3.right * weight);
             }
         }
         else
