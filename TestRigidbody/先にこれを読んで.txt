@@ -1,2 +1,8 @@
 Packageから読み込める人はpackageから読み込んでください。
 読み込めない人はTestRigidbodyAssets配下のファイルから読み込んでください。
+使い方はヒエラルキータブから試したいやつ(MovePositionやExplosionなど)を選択(チェックボックスにチェックを入れる)し、特定のキーを押す。
+◇使えるキー
+・MovePosition 	: Space
+・Explosion	: Space
+・Force		: F,A,I,V,F+Shift,A+Shift,I+Shift,V+Shift
+何をしているのかはコードを見て
