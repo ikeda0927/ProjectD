@@ -1,0 +1,77 @@
+実演手順
+・あらかじめダウンロードしてもらったzipファイルからプロジェクトを複製
+・TestRigidBodyのプロジェクト上で斜めの板と球を出し、球にRigidbodyを与えて球が傾斜を転がる様子を実演する。
+・TestRigidbody内のAddForceの項目を実演する。
+	・Force
+	・Acceleration
+	・Impulse
+	・VelocityChange
+・MovePositionの項目を実演
+	・IsKinematicが無効の状態で
+	・IsKinematicが有効の状態で
+・AddTorqueの項目を実演
+・AddExplosionForceの項目を実演
+・Springの項目を実演
+・Billiardの項目を実演
+	・デフォルトの状態で実行
+	・BallとCueにRigidbodyを追加
+	・CueのConstraintsを設定
+	・Cueにスクリプトを追加
+	・BallとCueのCollisionDetectionを設定
+	・PhysicMaterialを設定
+		・BilliardsBase
+		・Wall
+		・Ball
+		・Cue
+	・Holeにスクリプトを追加
+
+
+BilliardBase
+	Material : BilliardsBaseMat
+	※Mass : 10
+	※(Drag : 0)
+	※IsKinematic : true
+Wall
+	Material : BilliardsWallMat
+	※Mass : 5
+	※(Drag : 0)
+	※IsKinematic : true
+Hole
+	Script : Hole
+Ball
+	Material : BilliardsBallMat
+	Mass : 7
+	Drag : 0.5
+	Collision Detection : Continuous Speculative
+Ball in Balls
+	Material : BilliardsBallMat
+	Mass : 7
+	Drag : 0.5
+	Collision Detection : Continuous
+Cue
+	Material : BilliardsWallMat
+	Mass : 10
+	Drag : 0
+	Collision Detection : Continuous Speculative
+	Freeze Position : y
+	Freeze Rotation : x, y, z
+	Script : Billiards Cue ,Force=450
+
+BilliardsBase
+	Dynamic Friction : 0.2
+	Static Friction : 0
+	Bounciness : 0
+	Friction Combine : Average
+	Bounce Combine : Average
+BilliardBallMat
+	Dynamic Friction : 0.6
+	Static Friction : 0.6
+	Bounciness : 0.8
+	Friction Combine : Average
+	Bounce Combine : Average
+BilliardsWallMat
+	Dynamic Friction : 0.6
+	Static Friction : 0.6
+	Bounciness : 0.9
+	Friction Combine : Average
+	Bounce Combine : Average
