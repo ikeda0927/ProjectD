@@ -1084,7 +1084,7 @@ GameObject:
   - component: {fileID: 828993040}
   - component: {fileID: 828993041}
   m_Layer: 0
-  m_Name: Billiards
+  m_Name: Billiard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1666,7 +1666,7 @@ GameObject:
   - component: {fileID: 1364935944}
   - component: {fileID: 1364935943}
   m_Layer: 0
-  m_Name: BilliardsBase
+  m_Name: BilliardBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1945,6 +1945,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58e5a254e57347e58e80b79552bcab3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyJudge: 1
+  shot: 0
+  shotCounter: 0
   force: 400
 --- !u!65 &1492526092
 BoxCollider:

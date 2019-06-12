@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BilliartdsCue : MonoBehaviour
+public class BilliartdCue : MonoBehaviour
 {
     // Start is called before the first frame update
     bool keyJudge = true;

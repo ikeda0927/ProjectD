@@ -18,7 +18,14 @@ public class Hole : MonoBehaviour
             //Debug.Log("BallTrigger");
             game = other.gameObject.transform.parent.gameObject;
 
-            Destroy(game);
+            if (game.tag == "Ball")
+            {
+                Main.SetIsFoul();
+            }
+            else
+            {
+                Destroy(game);
+            }
         }
     }
     // Update is called once per frame

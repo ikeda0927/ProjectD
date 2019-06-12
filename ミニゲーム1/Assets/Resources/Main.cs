@@ -11,6 +11,9 @@ public class Main : MonoBehaviour
     private const int ADD_SCORE_MAX = 10;
     private const int ADD_SCORE_MIN = 0;
     private static GameObject balls;
+    private static GameObject ball;
+    private static bool endJudge = false;
+    private static bool isFoul = false;
 
 
     //test
@@ -20,11 +23,30 @@ public class Main : MonoBehaviour
     void Start()
     {
         balls = GameObject.Find("Balls");
+        ball = GameObject.Find("Ball");
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //ゲームにルールを追加
+
+        if (rest <= 0)
+        {
+            endJudge = true;
+        }
+
+        //ファールになるのは
+        //・手球(白い球)が最初に触れた球が台上の球のうち一番数字の小さい球ではなかった場合
+        //・手球がポケットに落ちた時
+        if (isFoul)
+        {
+            ball.GetComponent<Rigidbody>().isKinematic = true;
+            ball.transform.position = new Vector3(0, 5, -4);
+            ball.GetComponent<Rigidbody>().isKinematic = false;
+            isFoul = false;
+        }
+
         //動作確認用
 
         //if (Input.GetKey(KeyCode.S))
@@ -67,6 +89,20 @@ public class Main : MonoBehaviour
         //}
     }
 
+    //ファール時に呼び出して
+    public static void SetIsFoul()
+    {
+        isFoul = true;
+    }
+
+    //ゲームの終了判定
+    //ゲームが続いている場合は偽
+    //ゲームが終了した場合は真
+    public static bool GetEndJudge()
+    {
+        return endJudge;
+    }
+
     //残り回数の取得ができる。
     public static int GetRest()
     {
@@ -80,6 +116,7 @@ public class Main : MonoBehaviour
     }
 
     //残り回数の変更
+    //CueのOnCollisionEnterの中から呼び出してね
     public static void SubstructTheRest()
     {
         rest--;
