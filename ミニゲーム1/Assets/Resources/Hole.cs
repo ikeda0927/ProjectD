@@ -25,6 +25,7 @@ public class Hole : MonoBehaviour
             }
             else
             {
+                BilliardImage.DestroyBallImage(int.Parse(game.tag));
                 Destroy(game);
                 sound01.PlayOneShot(sound01.clip);
             }
