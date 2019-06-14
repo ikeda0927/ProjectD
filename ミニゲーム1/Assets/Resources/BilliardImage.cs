@@ -20,7 +20,7 @@ public class BilliardImage : MonoBehaviour
     //Billiardの数字を引数として渡すとそのボールが消えます。
     public static void DestroyBallImage(int num)
     {
-        Destroy(images[num + 1]);
+        Destroy(images[num - 1]);
     }
 
     //// Update is called once per frame
