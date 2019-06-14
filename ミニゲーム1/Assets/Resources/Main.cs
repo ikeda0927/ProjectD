@@ -14,7 +14,8 @@ public class Main : MonoBehaviour
     private static GameObject ball;
     private static bool endJudge = false;
     private static bool isFoul = false;
-
+    private static bool shotJudge = false;
+    private static GameObject cue;
 
     //test
     bool keyJudge = true;
@@ -24,6 +25,7 @@ public class Main : MonoBehaviour
     {
         balls = GameObject.Find("Balls");
         ball = GameObject.Find("Ball");
+        cue = GameObject.Find("Cue");
     }
 
     // Update is called once per frame
@@ -34,6 +36,11 @@ public class Main : MonoBehaviour
         if (rest <= 0)
         {
             endJudge = true;
+        }
+
+        if (endJudge)
+        {
+            Destroy(cue.GetComponent<BilliartdCue>());
         }
 
         //ファールになるのは
@@ -47,46 +54,59 @@ public class Main : MonoBehaviour
             isFoul = false;
         }
 
+
         //動作確認用
 
-        //if (Input.GetKey(KeyCode.S))
-        //{
-        //    if (keyJudge)
-        //    {
-        //        keyJudge = false;
-        //        AddScore(str);
-        //        AddScore(str);
-        //    }
-        //}
-        //else if (Input.GetKey(KeyCode.R))
-        //{
-        //    if (keyJudge)
-        //    {
-        //        keyJudge = false;
-        //        Debug.Log(score);
-        //    }
-        //}
-        //else if (Input.GetKey(KeyCode.A))
-        //{
-        //    if (keyJudge)
-        //    {
-        //        keyJudge = false;
-        //        int[] a = GetBalls();
-        //        int i = 1;
-        //        foreach (int temp in a)
-        //        {
-        //            if (temp == 1)
-        //            {
-        //                Debug.Log("Ball:" + i);
-        //            }
-        //            i++;
-        //        }
-        //    }
-        //}
-        //else
-        //{
-        //    keyJudge = true;
-        //}
+        if (Input.GetKey(KeyCode.S))
+        {
+            if (keyJudge)
+            {
+                keyJudge = false;
+                AddScore(str);
+                AddScore(str);
+            }
+        }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            if (keyJudge)
+            {
+                keyJudge = false;
+                Debug.Log(score);
+            }
+        }
+        else if (Input.GetKey(KeyCode.T))
+        {
+            if (keyJudge)
+            {
+                keyJudge = false;
+                //foreach (int i in array)
+                //{
+                //    Debug.Log("Array : " + i);
+                //}
+                Debug.Log("Least Number is " + GetLeastNumber());
+            }
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            if (keyJudge)
+            {
+                keyJudge = false;
+                int[] a = GetBalls();
+                int i = 1;
+                foreach (int temp in a)
+                {
+                    if (temp == 1)
+                    {
+                        Debug.Log("Ball:" + i);
+                    }
+                    i++;
+                }
+            }
+        }
+        else
+        {
+            keyJudge = true;
+        }
     }
 
     //ファール時に呼び出して
@@ -107,6 +127,15 @@ public class Main : MonoBehaviour
     public static int GetRest()
     {
         return rest;
+    }
+
+    public static bool GetShotJudge()
+    {
+        return shotJudge;
+    }
+    public static void SetShotJudge(bool b)
+    {
+        shotJudge = b;
     }
 
     //スコアの取得
@@ -136,6 +165,21 @@ public class Main : MonoBehaviour
         catch (System.Exception e)
         {
         }
+    }
+
+    //現在残っている球の中でもっとも低い数字を返す
+    public static int GetLeastNumber()
+    {
+        int i = 0;
+        int[] tempArray = GetBalls();
+        for (int j = 0; j < tempArray.Length; j++)
+        {
+            if (tempArray[j] == 1)
+            {
+                return j + 1;
+            }
+        }
+        return i;
     }
 
     //現在残っている球を返す。

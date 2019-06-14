@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class Hole : MonoBehaviour
 {
+    private AudioSource sound01;
     // Start is called before the first frame update
     GameObject game;
     void Start()
     {
-
+        sound01 = GetComponent<AudioSource>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -25,7 +26,16 @@ public class Hole : MonoBehaviour
             else
             {
                 Destroy(game);
+                sound01.PlayOneShot(sound01.clip);
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.tag != "Ball")
+        {
+            sound01.PlayOneShot(sound01.clip);
         }
     }
     // Update is called once per frame

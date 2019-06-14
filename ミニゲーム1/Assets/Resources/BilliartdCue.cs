@@ -10,20 +10,28 @@ public class BilliartdCue : MonoBehaviour
     int shotCounter = 0;
     const int shotWeight = 40;
     const float WEIGHT = 0.2f;
-    public float force = 250f;
+    public float force = 450f;
+    private static bool collisionJudge = false;
+    private static int collisionCounter = 0;
+    private const int COLLISION_WEIGHT = 5;
+    private const float MOVE_WEIGHT = .1f;
+    private static Rigidbody rb;
     void Start()
     {
-
+        rb = gameObject.GetComponent<Rigidbody>();
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Ball")
+        //ファール判定
+        if (collision.transform.tag != "Ball" && collision.transform.tag != "Untagged")
         {
-            Debug.Log("Collision");
-            //gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-            gameObject.transform.position = new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 2, gameObject.transform.position.z);
-            gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            Debug.Log("Collision detected on BilliardCue.cs : " + collision.transform.tag);
+            //Debug.Break();
+            Main.SetIsFoul();
         }
+
+        //衝突検知(FixedUpdateのなかで以下の値を使う)
+        collisionJudge = true;
     }
     // Update is called once per frame
     void Update()
@@ -33,50 +41,61 @@ public class BilliartdCue : MonoBehaviour
             if (keyJudge)
             {
                 keyJudge = false;
-                gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-                gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
-                //gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
-                //gameObject.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, force, 0), ForceMode.Impulse);
-                //gameObject.GetComponent<Rigidbody>().AddRelativeForce(Vector3.up * force, ForceMode.Impulse);
-                //Debug.Log("Mathf.Cos(gameObject.transform.localRotation.x * Mathf.Rad2Deg):" + Mathf.Cos(gameObject.transform.localRotation.x * Mathf.Rad2Deg) + "¥ngameObject.transform.localRotation.x * Mathf.Rad2Deg:" + gameObject.transform.localRotation.x * Mathf.Rad2Deg + "");
-                //gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(Mathf.Sin(gameObject.transform.localRotation.x * Mathf.Rad2Deg) * force, 0, Mathf.Cos(gameObject.transform.localRotation.z * Mathf.Rad2Deg) * force), ForceMode.Impulse);
-                gameObject.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(Mathf.Sin(gameObject.transform.localRotation.x * Mathf.Deg2Rad) * force, Mathf.Cos(gameObject.transform.localRotation.y * Mathf.Deg2Rad) * force, 0), ForceMode.Impulse);
-                //keyJudge = false;
-                //gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, 5));
-                //shot = true;
+
+                //上に動かす代わりにBoxColliderを無効にする
+                gameObject.GetComponent<BoxCollider>().enabled = true;
+
+                rb.AddRelativeForce(new Vector3(Mathf.Sin(gameObject.transform.localRotation.x * Mathf.Deg2Rad) * force, Mathf.Cos(gameObject.transform.localRotation.y * Mathf.Deg2Rad) * force, 0), ForceMode.Impulse);
             }
+        }
+        else if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                //Cueを回転させる
+                rb.rotation = Quaternion.Euler(90, rb.rotation.eulerAngles.y - 1, 0);
+            }
+            else
+            {
+                //Cueの位置を変える
+                rb.position = new Vector3(rb.position.x - MOVE_WEIGHT, rb.position.y, rb.position.z);
+            }
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            {
+                rb.rotation = Quaternion.Euler(90, rb.rotation.eulerAngles.y + 1, 0);
+            }
+            else
+            {
+                rb.position = new Vector3(rb.position.x + MOVE_WEIGHT, rb.position.y, rb.position.z);
+            }
+        }
+        else if (Input.GetKey(KeyCode.UpArrow))
+        {
+            rb.position = new Vector3(rb.position.x, rb.position.y, rb.position.z + MOVE_WEIGHT);
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            rb.position = new Vector3(rb.position.x, rb.position.y, rb.position.z - MOVE_WEIGHT);
         }
         else
         {
             keyJudge = true;
         }
-        //if (shot)
-        //{
-        //    keyJudge = false;
-        //    gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        //    gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
-        //    gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, 10), ForceMode.Impulse);
-        //    if (shotCounter < shotWeight / 2)
-        //    {
-        //        //gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, 10), ForceMode.Impulse);
-        //        //gameObject.GetComponent<Rigidbody>().position = new Vector3(gameObject.GetComponent<Rigidbody>().position.x, gameObject.GetComponent<Rigidbody>().position.y, gameObject.GetComponent<Rigidbody>().position.z + WEIGHT);
-        //        //gameObject.GetComponent<Rigidbody>().position = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, gameObject.transform.localPosition.z + WEIGHT);
-        //        shotCounter++;
-        //    }
-        //    else if (shotCounter < shotWeight)
-        //    {
-        //        //gameObject.GetComponent<Rigidbody>().AddForce(new Vector3(0, 0, -5), ForceMode.Force);
-        //        //gameObject.GetComponent<Rigidbody>().position = new Vector3(gameObject.GetComponent<Rigidbody>().position.x, gameObject.GetComponent<Rigidbody>().position.y, gameObject.GetComponent<Rigidbody>().position.z - WEIGHT);
-        //        //gameObject.GetComponent<Rigidbody>().position = new Vector3(gameObject.transform.localPosition.x, gameObject.transform.localPosition.y, gameObject.transform.localPosition.z - WEIGHT);
-        //        shotCounter++;
-        //    }
-        //    else
-        //    {
-        //        gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
-        //        shotCounter = 0;
-        //        keyJudge = true;
-        //        shot = false;
-        //    }
-        //}
+        if (collisionJudge && collisionCounter < COLLISION_WEIGHT)
+        {
+            collisionCounter++;
+        }
+        else if (collisionJudge)
+        {
+            gameObject.GetComponent<BoxCollider>().enabled = false;
+            rb.constraints = RigidbodyConstraints.FreezeAll;
+            collisionJudge = false;
+            collisionCounter = 0;
+            rb.constraints = RigidbodyConstraints.None;
+            rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
+        }
     }
 }
