@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 public class Main : MonoBehaviour
 {
     // Start is called before the first frame update
     //残り回数
-    private static int rest = 5;
+    private const int REST_MAX = 5;
+    private static int rest = REST_MAX;
     private static int score = 0;
     private static int[] array = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     private const int ADD_SCORE_MAX = 10;
@@ -16,6 +18,10 @@ public class Main : MonoBehaviour
     private static bool isFoul = false;
     private static bool shotJudge = false;
     private static GameObject cue;
+    private static GameObject UI_rest;
+    private static GameObject UI_score;
+    private static Text UI_rest_text;
+    private static Text UI_score_text;
 
     //test
     bool keyJudge = true;
@@ -26,6 +32,11 @@ public class Main : MonoBehaviour
         balls = GameObject.Find("Balls");
         ball = GameObject.Find("Ball");
         cue = GameObject.Find("Cue");
+        UI_rest = GameObject.Find("Rest");
+        UI_score = GameObject.Find("Score");
+        UI_rest_text = UI_rest.GetComponentInChildren<Text>();
+        UI_score_text = UI_score.GetComponentInChildren<Text>();
+
     }
 
     // Update is called once per frame
@@ -54,59 +65,67 @@ public class Main : MonoBehaviour
             isFoul = false;
         }
 
+        if (rest != REST_MAX)
+        {
+            //残り回数の表示
+            UI_rest_text.text = "R : " + rest;
+            //スコアの表示
+            UI_score_text.text = "S : " + score;
+        }
 
-        //動作確認用
 
-        if (Input.GetKey(KeyCode.S))
-        {
-            if (keyJudge)
-            {
-                keyJudge = false;
-                AddScore(str);
-                AddScore(str);
-            }
-        }
-        else if (Input.GetKey(KeyCode.R))
-        {
-            if (keyJudge)
-            {
-                keyJudge = false;
-                Debug.Log(score);
-            }
-        }
-        else if (Input.GetKey(KeyCode.T))
-        {
-            if (keyJudge)
-            {
-                keyJudge = false;
-                //foreach (int i in array)
-                //{
-                //    Debug.Log("Array : " + i);
-                //}
-                Debug.Log("Least Number is " + GetLeastNumber());
-            }
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            if (keyJudge)
-            {
-                keyJudge = false;
-                int[] a = GetBalls();
-                int i = 1;
-                foreach (int temp in a)
-                {
-                    if (temp == 1)
-                    {
-                        Debug.Log("Ball:" + i);
-                    }
-                    i++;
-                }
-            }
-        }
-        else
-        {
-            keyJudge = true;
-        }
+        //    //動作確認用
+
+        //    if (Input.GetKey(KeyCode.S))
+        //    {
+        //        if (keyJudge)
+        //        {
+        //            keyJudge = false;
+        //            AddScore(str);
+        //            AddScore(str);
+        //        }
+        //    }
+        //    else if (Input.GetKey(KeyCode.R))
+        //    {
+        //        if (keyJudge)
+        //        {
+        //            keyJudge = false;
+        //            Debug.Log(score);
+        //        }
+        //    }
+        //    else if (Input.GetKey(KeyCode.T))
+        //    {
+        //        if (keyJudge)
+        //        {
+        //            keyJudge = false;
+        //            //foreach (int i in array)
+        //            //{
+        //            //    Debug.Log("Array : " + i);
+        //            //}
+        //            Debug.Log("Least Number is " + GetLeastNumber());
+        //        }
+        //    }
+        //    else if (Input.GetKey(KeyCode.A))
+        //    {
+        //        if (keyJudge)
+        //        {
+        //            keyJudge = false;
+        //            int[] a = GetBalls();
+        //            int i = 1;
+        //            foreach (int temp in a)
+        //            {
+        //                if (temp == 1)
+        //                {
+        //                    Debug.Log("Ball:" + i);
+        //                }
+        //                i++;
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        keyJudge = true;
+        //    }
     }
 
     //ファール時に呼び出して
