@@ -48,11 +48,13 @@ public class Hole : MonoBehaviour
     {
         if (holeIsTrigger)
         {
-            capsuleCollider.isTrigger = true;
+            //capsuleCollider.isTrigger = true;
+            capsuleCollider.enabled = true;
         }
         else
         {
-            capsuleCollider.isTrigger = false;
+            //capsuleCollider.isTrigger = false;
+            capsuleCollider.enabled = false;
         }
     }
     public static void UnsetHoleIsTrigger()
