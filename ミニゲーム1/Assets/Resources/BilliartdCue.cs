@@ -36,11 +36,12 @@ public class BilliartdCue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) || UI_Controler.GetPush())
         {
             if (keyJudge)
             {
                 keyJudge = false;
+                UI_Controler.StopPush();
 
                 //上に動かす代わりにBoxColliderを無効にする
                 gameObject.GetComponent<BoxCollider>().enabled = true;
@@ -48,9 +49,9 @@ public class BilliartdCue : MonoBehaviour
                 rb.AddRelativeForce(new Vector3(Mathf.Sin(gameObject.transform.localRotation.x * Mathf.Deg2Rad) * force, Mathf.Cos(gameObject.transform.localRotation.y * Mathf.Deg2Rad) * force, 0), ForceMode.Impulse);
             }
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow) || UI_Controler.GetMoveLeft())
         {
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || UI_Controler.GetChangeAngle())
             {
                 //Cueを回転させる
                 rb.rotation = Quaternion.Euler(90, rb.rotation.eulerAngles.y - 1, 0);
@@ -61,9 +62,9 @@ public class BilliartdCue : MonoBehaviour
                 rb.position = new Vector3(rb.position.x - MOVE_WEIGHT, rb.position.y, rb.position.z);
             }
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.RightArrow) || UI_Controler.GetMoveRight())
         {
-            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || UI_Controler.GetChangeAngle())
             {
                 rb.rotation = Quaternion.Euler(90, rb.rotation.eulerAngles.y + 1, 0);
             }
@@ -72,11 +73,11 @@ public class BilliartdCue : MonoBehaviour
                 rb.position = new Vector3(rb.position.x + MOVE_WEIGHT, rb.position.y, rb.position.z);
             }
         }
-        else if (Input.GetKey(KeyCode.UpArrow))
+        else if (Input.GetKey(KeyCode.UpArrow) || UI_Controler.GetMoveFoward())
         {
             rb.position = new Vector3(rb.position.x, rb.position.y, rb.position.z + MOVE_WEIGHT);
         }
-        else if (Input.GetKey(KeyCode.DownArrow))
+        else if (Input.GetKey(KeyCode.DownArrow) || UI_Controler.GetMoveBack())
         {
             rb.position = new Vector3(rb.position.x, rb.position.y, rb.position.z - MOVE_WEIGHT);
         }
@@ -97,5 +98,10 @@ public class BilliartdCue : MonoBehaviour
             rb.constraints = RigidbodyConstraints.None;
             rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotation;
         }
+        //moveLeft = false;
+        //moveRight = false;
+        //moveFoward = false;
+        //moveBack = false;
+        //changeAngle = false;
     }
 }
