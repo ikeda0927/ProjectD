@@ -30,7 +30,8 @@ public class Hole : MonoBehaviour
             {
                 Main.AddScore(game.tag);
                 BilliardImage.DestroyBallImage(int.Parse(game.tag));
-                Destroy(game);
+                //Destroy(game);
+                game.SetActive(false);
                 sound01.PlayOneShot(sound01.clip);
             }
         }

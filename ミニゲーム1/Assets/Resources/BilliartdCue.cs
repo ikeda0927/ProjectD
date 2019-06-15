@@ -43,6 +43,7 @@ public class BilliartdCue : MonoBehaviour
                 keyJudge = false;
                 UI_Controler.StopPush();
                 Hole.SetHoleIsTrigger();
+                Main.SetReset(false);
 
                 //上に動かす代わりにBoxColliderを無効にする
                 gameObject.GetComponent<BoxCollider>().enabled = true;
@@ -52,6 +53,7 @@ public class BilliartdCue : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.LeftArrow) || UI_Controler.GetMoveLeft())
         {
+            Main.SetReset(false);
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || UI_Controler.GetChangeAngle())
             {
                 //Cueを回転させる
@@ -65,6 +67,7 @@ public class BilliartdCue : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.RightArrow) || UI_Controler.GetMoveRight())
         {
+            Main.SetReset(false);
             if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) || UI_Controler.GetChangeAngle())
             {
                 rb.rotation = Quaternion.Euler(90, rb.rotation.eulerAngles.y + 1, 0);
@@ -76,10 +79,12 @@ public class BilliartdCue : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.UpArrow) || UI_Controler.GetMoveFoward())
         {
+            Main.SetReset(false);
             rb.position = new Vector3(rb.position.x, rb.position.y, rb.position.z + MOVE_WEIGHT);
         }
         else if (Input.GetKey(KeyCode.DownArrow) || UI_Controler.GetMoveBack())
         {
+            Main.SetReset(false);
             rb.position = new Vector3(rb.position.x, rb.position.y, rb.position.z - MOVE_WEIGHT);
         }
         else

@@ -68,6 +68,14 @@ public class UI_Controler : MonoBehaviour
     //{
     //    push = false;
     //}
+    public void Reset()
+    {
+        Main.SetReset(true);
+    }
+    public void StopReset()
+    {
+        Main.SetReset(false);
+    }
     public static void StopPush()
     {
         push = false;

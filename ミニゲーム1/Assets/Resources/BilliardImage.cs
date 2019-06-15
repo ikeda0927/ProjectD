@@ -20,7 +20,15 @@ public class BilliardImage : MonoBehaviour
     //Billiardの数字を引数として渡すとそのボールが消えます。
     public static void DestroyBallImage(int num)
     {
-        Destroy(images[num - 1]);
+        //Destroy(images[num - 1]);
+        images[num - 1].SetActive(false);
+    }
+    public static void ResetBallImage()
+    {
+        foreach (GameObject gameObject in images)
+        {
+            gameObject.SetActive(true);
+        }
     }
 
     //// Update is called once per frame

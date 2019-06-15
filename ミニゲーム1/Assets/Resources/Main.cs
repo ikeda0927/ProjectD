@@ -6,9 +6,10 @@ public class Main : MonoBehaviour
 {
     // Start is called before the first frame update
     //残り回数
-    private const int REST_MAX = 5;
-    private static int rest = REST_MAX;
+    private readonly int REST_MAX = 5;
+    private static int rest;
     private static int score = 0;
+    private static readonly int[] ARRAY = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     private static int[] array = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     private const int ADD_SCORE_MAX = 10;
     private const int ADD_SCORE_MIN = 0;
@@ -22,6 +23,8 @@ public class Main : MonoBehaviour
     private static GameObject UI_score;
     private static Text UI_rest_text;
     private static Text UI_score_text;
+    private static bool reset;
+    private static Vector3[] posisions = new Vector3[9];
 
     //test
     bool keyJudge = true;
@@ -29,6 +32,7 @@ public class Main : MonoBehaviour
 
     void Start()
     {
+        rest = REST_MAX;
         balls = GameObject.Find("Balls");
         ball = GameObject.Find("Ball");
         cue = GameObject.Find("Cue");
@@ -36,6 +40,10 @@ public class Main : MonoBehaviour
         UI_score = GameObject.Find("Score");
         UI_rest_text = UI_rest.GetComponentInChildren<Text>();
         UI_score_text = UI_score.GetComponentInChildren<Text>();
+        for (int i = 0; i < balls.transform.childCount; i++)
+        {
+            posisions[i] = balls.transform.GetChild(i).gameObject.transform.position;
+        }
 
     }
 
@@ -51,7 +59,8 @@ public class Main : MonoBehaviour
 
         if (endJudge)
         {
-            Destroy(cue.GetComponent<BilliartdCue>());
+            //Destroy(cue.GetComponent<BilliartdCue>());
+            cue.GetComponent<BilliartdCue>().enabled = false;
         }
 
         //ファールになるのは
@@ -75,59 +84,80 @@ public class Main : MonoBehaviour
             UI_score_text.text = "S : " + score;
         }
 
+        //リセット
+        if (reset)
+        {
+            endJudge = false;
+            cue.GetComponent<BilliartdCue>().enabled = true;
+            Hole.UnsetHoleIsTrigger();
+            reset = false;
+            array = ARRAY;
+            score = 0;
+            rest = REST_MAX;
+            UI_rest_text.text = "Rest";
+            UI_score_text.text = "Score";
+            BilliardImage.ResetBallImage();
+            int childCount = balls.transform.childCount;
+            for (int i = 0; i < childCount; i++)
+            {
+                balls.transform.GetChild(i).gameObject.SetActive(true);
+                balls.transform.GetChild(i).gameObject.transform.position = posisions[i];
+            }
+            BiliardBall.SetReset(true);
+        }
 
         //    //動作確認用
 
-        //    if (Input.GetKey(KeyCode.S))
-        //    {
-        //        if (keyJudge)
-        //        {
-        //            keyJudge = false;
-        //            AddScore(str);
-        //            AddScore(str);
-        //        }
-        //    }
-        //    else if (Input.GetKey(KeyCode.R))
-        //    {
-        //        if (keyJudge)
-        //        {
-        //            keyJudge = false;
-        //            Debug.Log(score);
-        //        }
-        //    }
-        //    else if (Input.GetKey(KeyCode.T))
-        //    {
-        //        if (keyJudge)
-        //        {
-        //            keyJudge = false;
-        //            //foreach (int i in array)
-        //            //{
-        //            //    Debug.Log("Array : " + i);
-        //            //}
-        //            Debug.Log("Least Number is " + GetLeastNumber());
-        //        }
-        //    }
-        //    else if (Input.GetKey(KeyCode.A))
-        //    {
-        //        if (keyJudge)
-        //        {
-        //            keyJudge = false;
-        //            int[] a = GetBalls();
-        //            int i = 1;
-        //            foreach (int temp in a)
-        //            {
-        //                if (temp == 1)
-        //                {
-        //                    Debug.Log("Ball:" + i);
-        //                }
-        //                i++;
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        keyJudge = true;
-        //    }
+        if (Input.GetKey(KeyCode.S))
+        {
+            if (keyJudge)
+            {
+                keyJudge = false;
+                AddScore(str);
+                AddScore(str);
+            }
+        }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            if (keyJudge)
+            {
+                keyJudge = false;
+                Debug.Log(score);
+            }
+        }
+        else if (Input.GetKey(KeyCode.T))
+        {
+            if (keyJudge)
+            {
+                keyJudge = false;
+                //foreach (int i in array)
+                //{
+                //    Debug.Log("Array : " + i);
+                //}
+                Debug.Log("Least Number is " + GetLeastNumber());
+            }
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            if (keyJudge)
+            {
+                keyJudge = false;
+                int[] a = GetBalls();
+                int i = 1;
+                foreach (int temp in a)
+                {
+                    if (temp == 1)
+                    {
+                        Debug.Log("Ball:" + i);
+                    }
+                    i++;
+                }
+            }
+        }
+        else
+        {
+            keyJudge = true;
+        }
     }
 
     //ファール時に呼び出して
@@ -163,6 +193,17 @@ public class Main : MonoBehaviour
     public static int GetScore()
     {
         return score;
+    }
+
+    public static bool GetReset()
+    {
+        return reset;
+    }
+
+    public static void SetReset(bool b)
+    {
+        reset = b;
+        BiliardBall.SetReset(b);
     }
 
     //残り回数の変更
@@ -217,7 +258,11 @@ public class Main : MonoBehaviour
         int childCount = balls.transform.childCount;
         for (int i = 0; i < childCount; i++)
         {
-            a[int.Parse(balls.transform.GetChild(i).transform.tag) - 1] = 1;
+            if (balls.transform.GetChild(i).gameObject.activeSelf)
+            {
+                a[i] = 1;
+            }
+            //a[int.Parse(balls.transform.GetChild(i).transform.tag) - 1] = 1;
         }
         return a;
     }
