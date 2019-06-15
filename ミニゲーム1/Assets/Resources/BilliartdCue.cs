@@ -42,6 +42,7 @@ public class BilliartdCue : MonoBehaviour
             {
                 keyJudge = false;
                 UI_Controler.StopPush();
+                Hole.SetHoleIsTrigger();
 
                 //上に動かす代わりにBoxColliderを無効にする
                 gameObject.GetComponent<BoxCollider>().enabled = true;

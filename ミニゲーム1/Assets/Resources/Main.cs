@@ -57,8 +57,10 @@ public class Main : MonoBehaviour
         //ファールになるのは
         //・手球(白い球)が最初に触れた球が台上の球のうち一番数字の小さい球ではなかった場合
         //・手球がポケットに落ちた時
+        //ファール時は残り回数は減らない。
         if (isFoul)
         {
+            Hole.UnsetHoleIsTrigger();
             ball.GetComponent<Rigidbody>().isKinematic = true;
             ball.transform.position = new Vector3(0, 5, -4);
             ball.GetComponent<Rigidbody>().isKinematic = false;

@@ -5,11 +5,14 @@ using UnityEngine;
 public class Hole : MonoBehaviour
 {
     private AudioSource sound01;
+    private static bool holeIsTrigger = true;
     // Start is called before the first frame update
     GameObject game;
+    CapsuleCollider capsuleCollider;
     void Start()
     {
         sound01 = GetComponent<AudioSource>();
+        capsuleCollider = gameObject.GetComponent<CapsuleCollider>();
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -43,6 +46,21 @@ public class Hole : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (holeIsTrigger)
+        {
+            capsuleCollider.isTrigger = true;
+        }
+        else
+        {
+            capsuleCollider.isTrigger = false;
+        }
+    }
+    public static void UnsetHoleIsTrigger()
+    {
+        holeIsTrigger = false;
+    }
+    public static void SetHoleIsTrigger()
+    {
+        holeIsTrigger = true;
     }
 }
