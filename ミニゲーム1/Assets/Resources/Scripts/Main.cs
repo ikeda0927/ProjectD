@@ -94,7 +94,10 @@ public class Main : MonoBehaviour
             cue.GetComponent<BilliartdCue>().enabled = true;
             Hole.UnsetHoleIsTrigger();
             reset = false;
-            array = ARRAY;
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = ARRAY[i];
+            }
             score = 0;
             rest = REST_MAX;
             UI_rest_text.text = "Rest";
