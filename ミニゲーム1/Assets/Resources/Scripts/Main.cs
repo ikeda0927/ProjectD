@@ -25,6 +25,8 @@ public class Main : MonoBehaviour
     private static Text UI_score_text;
     private static bool reset;
     private static Vector3[] posisions = new Vector3[9];
+    private static Vector3 cuePosition;
+    private static Quaternion cueRotation;
 
     //test
     bool keyJudge = true;
@@ -44,7 +46,8 @@ public class Main : MonoBehaviour
         {
             posisions[i] = balls.transform.GetChild(i).gameObject.transform.position;
         }
-
+        cuePosition = cue.transform.position;
+        cueRotation = cue.transform.rotation;
     }
 
     // Update is called once per frame
@@ -103,6 +106,8 @@ public class Main : MonoBehaviour
                 balls.transform.GetChild(i).gameObject.SetActive(true);
                 balls.transform.GetChild(i).gameObject.transform.position = posisions[i];
             }
+            cue.transform.position = cuePosition;
+            cue.transform.rotation = cueRotation;
             BiliardBall.SetReset(true);
         }
 
