@@ -49,6 +49,9 @@ public class Tank : MonoBehaviour
     Vector3 vector;
     Vector2 currentWidthAndHeight;
     int screenPositionNum0 = 0;//left -> 1, middle -> 2, right -> 3
+    int[] screenPositionNums = new int[10];
+    Dictionary<int, int> screenPositionsNumSet = new Dictionary<int, int>();
+
     Vector2 touchedPosition;
 
     //Simulate
@@ -946,6 +949,445 @@ public class Tank : MonoBehaviour
     }
     void Contorol(Touch touch)
     {
+        switch (touch.phase)
+        {
+            case TouchPhase.Began:
+                if (touch.position.x < currentWidthAndHeight.x / 3)
+                {
+                    touchedPosition = touch.position;
+                    screenPositionsNumSet.Add(touch.fingerId, 1);
+                    //screenPositionNum0 = 1;
+                }
+                else if (touch.position.x < (currentWidthAndHeight.x / 3) * 2)
+                {
+                    touchedPosition = touch.position;
+                    screenPositionsNumSet.Add(touch.fingerId, 2);
+                    //screenPositionNum0 = 2;
+                }
+                else if (touch.position.x < currentWidthAndHeight.x)
+                {
+                    touchedPosition = touch.position;
+                    screenPositionsNumSet.Add(touch.fingerId, 3);
+                    //screenPositionNum0 = 3;
+                }
+                break;
+            case TouchPhase.Moved:
+                int spns = screenPositionsNumSet[touch.fingerId];
+                switch (spns)
+                {
+                    case 1:
+                    case 3:
+                        //float x = 0;
+                        //float z = 0;
+                        float dx = touch.position.x - touchedPosition.x;
+                        float dy = touch.position.y - touchedPosition.y;
+
+                        if (dx >= 0)
+                        {
+                            if (dy >= 0)
+                            {
+                                if (dx <= dy)
+                                {
+                                    if (spns == 1)
+                                    {
+                                        //move foward
+                                        if (isMove)
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            rCate1.AddRelativeForce(forceF, ForceMode.Force);
+                                            rCate2.AddRelativeForce(forceF, ForceMode.Force);
+                                        }
+                                        else
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            ToMoveable();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (dx == 0 && dy == 0) { }
+                                        else
+                                        {
+                                            //barrel up
+                                            if (!isMove && !isHorizontal)
+                                            {
+                                                if (CameraContoroler.GetCameraNum() == 2)
+                                                {
+
+                                                    barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+
+                                                }
+                                                else
+                                                {
+
+                                                    barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+
+                                                }
+                                            }
+                                            else
+                                            {
+                                                Vertical();
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (spns == 1)
+                                    {
+                                        //turn right
+                                        if (isMove)
+                                        {
+                                            //Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            rCate1.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
+                                            rCate2.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
+                                        }
+                                        else
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            ToMoveable();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //battery right
+                                        if (!isMove && isHorizontal)
+                                        {
+                                            if (CameraContoroler.GetCameraNum() == 2)
+                                            {
+                                                battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
+                                            }
+                                            else
+                                            {
+                                                battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Horizontal();
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (-dx < dy)
+                                {
+                                    if (spns == 1)
+                                    {
+                                        //turn right
+                                        if (isMove)
+                                        {
+                                            //Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            rCate1.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
+                                            rCate2.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
+                                        }
+                                        else
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            ToMoveable();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //battery right
+                                        if (!isMove && isHorizontal)
+                                        {
+                                            if (CameraContoroler.GetCameraNum() == 2)
+                                            {
+                                                battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
+                                            }
+                                            else
+                                            {
+                                                battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Horizontal();
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (spns == 1)
+                                    {
+                                        //move back
+                                        if (isMove)
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            rCate1.AddRelativeForce(forceB, ForceMode.Force);
+                                            rCate2.AddRelativeForce(forceB, ForceMode.Force);
+                                        }
+                                        else
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            ToMoveable();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //barrel down
+                                        if (!isMove && !isHorizontal)
+                                        {
+                                            if (CameraContoroler.GetCameraNum() == 2)
+                                            {
+
+                                                barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+
+                                            }
+                                            else
+                                            {
+
+                                                barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Vertical();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (dy >= 0)
+                            {
+                                if (-dx < dy)
+                                {
+                                    if (spns == 1)
+                                    {
+                                        //move foward
+                                        if (isMove)
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            rCate1.AddRelativeForce(forceF, ForceMode.Force);
+                                            rCate2.AddRelativeForce(forceF, ForceMode.Force);
+                                        }
+                                        else
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            ToMoveable();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //barrel up
+                                        if (!isMove && !isHorizontal)
+                                        {
+                                            if (CameraContoroler.GetCameraNum() == 2)
+                                            {
+
+                                                barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+
+                                            }
+                                            else
+                                            {
+
+                                                barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Vertical();
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (spns == 1)
+                                    {
+                                        //turn left
+                                        if (isMove)
+                                        {
+                                            //Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            rCate1.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
+                                            rCate2.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
+                                        }
+                                        else
+                                        {
+                                            //Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            ToMoveable();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //battery left
+                                        if (!isMove && isHorizontal)
+                                        {
+                                            if (CameraContoroler.GetCameraNum() == 2)
+                                            {
+
+                                                battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
+                                            }
+                                            else
+                                            {
+
+                                                battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Horizontal();
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (dx < dy)
+                                {
+                                    if (spns == 1)
+                                    {
+                                        //turn left
+                                        if (isMove)
+                                        {
+                                            //Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            rCate1.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
+                                            rCate2.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
+                                        }
+                                        else
+                                        {
+                                            //Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            ToMoveable();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //battery left
+                                        if (!isMove && isHorizontal)
+                                        {
+                                            if (CameraContoroler.GetCameraNum() == 2)
+                                            {
+
+                                                battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
+                                            }
+                                            else
+                                            {
+
+                                                battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Horizontal();
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (spns == 1)
+                                    {
+                                        //move back
+                                        if (isMove)
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            rCate1.AddRelativeForce(forceB, ForceMode.Force);
+                                            rCate2.AddRelativeForce(forceB, ForceMode.Force);
+                                        }
+                                        else
+                                        {//Trail Test
+                                            Trail.SetTrailJudge(false);
+                                            isMoving = true;
+                                            //
+                                            ToMoveable();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        //barrel down
+                                        if (!isMove && !isHorizontal)
+                                        {
+                                            if (CameraContoroler.GetCameraNum() == 2)
+                                            {
+
+                                                barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+
+                                            }
+                                            else
+                                            {
+
+                                                barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Vertical();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        //if (touchedPosition.x < touch0.position.x)
+                        //{
+                        //    x = 1;
+                        //}
+                        //else if (touchedPosition.x > touch0.position.x)
+                        //{
+                        //    x = -1;
+                        //}
+                        //else if (touchedPosition.y < touch0.position.y)
+                        //{
+                        //    z = 1;
+                        //}
+                        //else if (touchedPosition.y > touch0.position.y)
+                        //{
+                        //    z = -1;
+                        //}
+                        //rb.AddForce(new Vector3(x, 0, z) * force);
+                        //rb.AddForce(new Vector3(touch0.position.x - touchedPosition.x, 0, touch0.position.y - touchedPosition.y) * force);
+                        break;
+                    case 2:
+                        break;
+                }
+                break;
+            case TouchPhase.Ended:
+                screenPositionsNumSet.Remove(touch.fingerId);
+                break;
+        }
+        /*
+        //
         switch (screenPositionNum0)
         {
             case 1:
@@ -958,184 +1400,184 @@ public class Tank : MonoBehaviour
                     {
                         if (dx <= dy)
                         {
-                            if (screenPositionNum0 == 1)
-                            {
-                                //move foward
-                                if (isMove)
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    rCate1.AddRelativeForce(forceF, ForceMode.Force);
-                                    rCate2.AddRelativeForce(forceF, ForceMode.Force);
-                                }
-                                else
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    ToMoveable();
-                                }
-                            }
-                            else
-                            {
-                                if (dx == 0 && dy == 0) { }
-                                else
-                                {
-                                    //barrel up
-                                    if (!isMove && !isHorizontal)
-                                    {
-                                        if (CameraContoroler.GetCameraNum() == 2)
-                                        {
+                            //if (screenPositionNum0 == 1)
+                            //{
+                            //    //move foward
+                            //    if (isMove)
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        rCate1.AddRelativeForce(forceF, ForceMode.Force);
+                            //        rCate2.AddRelativeForce(forceF, ForceMode.Force);
+                            //    }
+                            //    else
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        ToMoveable();
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    if (dx == 0 && dy == 0) { }
+                            //    else
+                            //    {
+                            //        //barrel up
+                            //        if (!isMove && !isHorizontal)
+                            //        {
+                            //            if (CameraContoroler.GetCameraNum() == 2)
+                            //            {
 
-                                            barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+                            //                barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
 
-                                        }
-                                        else
-                                        {
+                            //            }
+                            //            else
+                            //            {
 
-                                            barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+                            //                barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
 
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Vertical();
-                                    }
-                                }
-                            }
+                            //            }
+                            //        }
+                            //        else
+                            //        {
+                            //            Vertical();
+                            //        }
+                            //    }
+                            //}
                         }
                         else
                         {
-                            if (screenPositionNum0 == 1)
-                            {
-                                //turn right
-                                if (isMove)
-                                {
-                                    //Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    rCate1.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
-                                    rCate2.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
-                                }
-                                else
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    ToMoveable();
-                                }
-                            }
-                            else
-                            {
-                                //battery right
-                                if (!isMove && isHorizontal)
-                                {
-                                    if (CameraContoroler.GetCameraNum() == 2)
-                                    {
-                                        battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
-                                    }
-                                    else
-                                    {
-                                        battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
-                                    }
-                                }
-                                else
-                                {
-                                    Horizontal();
-                                }
-                            }
+                            //if (screenPositionNum0 == 1)
+                            //{
+                            //    //turn right
+                            //    if (isMove)
+                            //    {
+                            //        //Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        rCate1.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
+                            //        rCate2.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
+                            //    }
+                            //    else
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        ToMoveable();
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    //battery right
+                            //    if (!isMove && isHorizontal)
+                            //    {
+                            //        if (CameraContoroler.GetCameraNum() == 2)
+                            //        {
+                            //            battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
+                            //        }
+                            //        else
+                            //        {
+                            //            battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        Horizontal();
+                            //    }
+                            //}
                         }
                     }
                     else
                     {
                         if (-dx < dy)
                         {
-                            if (screenPositionNum0 == 1)
-                            {
-                                //turn right
-                                if (isMove)
-                                {
-                                    //Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    rCate1.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
-                                    rCate2.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
-                                }
-                                else
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    ToMoveable();
-                                }
-                            }
-                            else
-                            {
-                                //battery right
-                                if (!isMove && isHorizontal)
-                                {
-                                    if (CameraContoroler.GetCameraNum() == 2)
-                                    {
-                                        battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
-                                    }
-                                    else
-                                    {
-                                        battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
-                                    }
-                                }
-                                else
-                                {
-                                    Horizontal();
-                                }
-                            }
+                            //if (screenPositionNum0 == 1)
+                            //{
+                            //    //turn right
+                            //    if (isMove)
+                            //    {
+                            //        //Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        rCate1.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
+                            //        rCate2.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
+                            //    }
+                            //    else
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        ToMoveable();
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    //battery right
+                            //    if (!isMove && isHorizontal)
+                            //    {
+                            //        if (CameraContoroler.GetCameraNum() == 2)
+                            //        {
+                            //            battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
+                            //        }
+                            //        else
+                            //        {
+                            //            battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y + horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        Horizontal();
+                            //    }
+                            //}
                         }
                         else
                         {
-                            if (screenPositionNum0 == 1)
-                            {
-                                //move back
-                                if (isMove)
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    rCate1.AddRelativeForce(forceB, ForceMode.Force);
-                                    rCate2.AddRelativeForce(forceB, ForceMode.Force);
-                                }
-                                else
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    ToMoveable();
-                                }
-                            }
-                            else
-                            {
-                                //barrel down
-                                if (!isMove && !isHorizontal)
-                                {
-                                    if (CameraContoroler.GetCameraNum() == 2)
-                                    {
+                            //if (screenPositionNum0 == 1)
+                            //{
+                            //    //move back
+                            //    if (isMove)
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        rCate1.AddRelativeForce(forceB, ForceMode.Force);
+                            //        rCate2.AddRelativeForce(forceB, ForceMode.Force);
+                            //    }
+                            //    else
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        ToMoveable();
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    //barrel down
+                            //    if (!isMove && !isHorizontal)
+                            //    {
+                            //        if (CameraContoroler.GetCameraNum() == 2)
+                            //        {
 
-                                        barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+                            //            barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
 
-                                    }
-                                    else
-                                    {
+                            //        }
+                            //        else
+                            //        {
 
-                                        barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+                            //            barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
 
-                                    }
-                                }
-                                else
-                                {
-                                    Vertical();
-                                }
-                            }
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        Vertical();
+                            //    }
+                            //}
                         }
                     }
                 }
@@ -1145,186 +1587,186 @@ public class Tank : MonoBehaviour
                     {
                         if (-dx < dy)
                         {
-                            if (screenPositionNum0 == 1)
-                            {
-                                //move foward
-                                if (isMove)
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    rCate1.AddRelativeForce(forceF, ForceMode.Force);
-                                    rCate2.AddRelativeForce(forceF, ForceMode.Force);
-                                }
-                                else
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    ToMoveable();
-                                }
-                            }
-                            else
-                            {
-                                //barrel up
-                                if (!isMove && !isHorizontal)
-                                {
-                                    if (CameraContoroler.GetCameraNum() == 2)
-                                    {
+                            //if (screenPositionNum0 == 1)
+                            //{
+                            //    //move foward
+                            //    if (isMove)
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        rCate1.AddRelativeForce(forceF, ForceMode.Force);
+                            //        rCate2.AddRelativeForce(forceF, ForceMode.Force);
+                            //    }
+                            //    else
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        ToMoveable();
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    //barrel up
+                            //    if (!isMove && !isHorizontal)
+                            //    {
+                            //        if (CameraContoroler.GetCameraNum() == 2)
+                            //        {
 
-                                        barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+                            //            barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
 
-                                    }
-                                    else
-                                    {
+                            //        }
+                            //        else
+                            //        {
 
-                                        barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+                            //            barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x - verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
 
-                                    }
-                                }
-                                else
-                                {
-                                    Vertical();
-                                }
-                            }
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        Vertical();
+                            //    }
+                            //}
                         }
                         else
                         {
-                            if (screenPositionNum0 == 1)
-                            {
-                                //turn left
-                                if (isMove)
-                                {
-                                    //Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    rCate1.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
-                                    rCate2.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
-                                }
-                                else
-                                {
-                                    //Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    ToMoveable();
-                                }
-                            }
-                            else
-                            {
-                                //battery left
-                                if (!isMove && isHorizontal)
-                                {
-                                    if (CameraContoroler.GetCameraNum() == 2)
-                                    {
+                            //if (screenPositionNum0 == 1)
+                            //{
+                            //    //turn left
+                            //    if (isMove)
+                            //    {
+                            //        //Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        rCate1.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
+                            //        rCate2.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
+                            //    }
+                            //    else
+                            //    {
+                            //        //Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        ToMoveable();
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    //battery left
+                            //    if (!isMove && isHorizontal)
+                            //    {
+                            //        if (CameraContoroler.GetCameraNum() == 2)
+                            //        {
 
-                                        battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
-                                    }
-                                    else
-                                    {
+                            //            battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
+                            //        }
+                            //        else
+                            //        {
 
-                                        battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
-                                    }
-                                }
-                                else
-                                {
-                                    Horizontal();
-                                }
-                            }
+                            //            battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        Horizontal();
+                            //    }
+                            //}
                         }
                     }
                     else
                     {
                         if (dx < dy)
                         {
-                            if (screenPositionNum0 == 1)
-                            {
-                                //turn left
-                                if (isMove)
-                                {
-                                    //Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    rCate1.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
-                                    rCate2.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
-                                }
-                                else
-                                {
-                                    //Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    ToMoveable();
-                                }
-                            }
-                            else
-                            {
-                                //battery left
-                                if (!isMove && isHorizontal)
-                                {
-                                    if (CameraContoroler.GetCameraNum() == 2)
-                                    {
+                            //if (screenPositionNum0 == 1)
+                            //{
+                            //    //turn left
+                            //    if (isMove)
+                            //    {
+                            //        //Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        rCate1.AddRelativeForce(forceF * turnWeight, ForceMode.Force);
+                            //        rCate2.AddRelativeForce(forceB * turnWeight, ForceMode.Force);
+                            //    }
+                            //    else
+                            //    {
+                            //        //Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        ToMoveable();
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    //battery left
+                            //    if (!isMove && isHorizontal)
+                            //    {
+                            //        if (CameraContoroler.GetCameraNum() == 2)
+                            //        {
 
-                                        battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
-                                    }
-                                    else
-                                    {
+                            //            battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeightCamera2, battery.transform.eulerAngles.z);
+                            //        }
+                            //        else
+                            //        {
 
-                                        battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
-                                    }
-                                }
-                                else
-                                {
-                                    Horizontal();
-                                }
-                            }
+                            //            battery.transform.localEulerAngles = new Vector3(battery.transform.eulerAngles.x, battery.transform.eulerAngles.y - horizontalBatteryMoveWeight, battery.transform.eulerAngles.z);
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        Horizontal();
+                            //    }
+                            //}
                         }
                         else
                         {
-                            if (screenPositionNum0 == 1)
-                            {
-                                //move back
-                                if (isMove)
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    rCate1.AddRelativeForce(forceB, ForceMode.Force);
-                                    rCate2.AddRelativeForce(forceB, ForceMode.Force);
-                                }
-                                else
-                                {//Trail Test
-                                    Trail.SetTrailJudge(false);
-                                    isMoving = true;
-                                    //
-                                    ToMoveable();
-                                }
-                            }
-                            else
-                            {
-                                //barrel down
-                                if (!isMove && !isHorizontal)
-                                {
-                                    if (CameraContoroler.GetCameraNum() == 2)
-                                    {
+                            //if (screenPositionNum0 == 1)
+                            //{
+                            //    //move back
+                            //    if (isMove)
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        rCate1.AddRelativeForce(forceB, ForceMode.Force);
+                            //        rCate2.AddRelativeForce(forceB, ForceMode.Force);
+                            //    }
+                            //    else
+                            //    {//Trail Test
+                            //        Trail.SetTrailJudge(false);
+                            //        isMoving = true;
+                            //        //
+                            //        ToMoveable();
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    //barrel down
+                            //    if (!isMove && !isHorizontal)
+                            //    {
+                            //        if (CameraContoroler.GetCameraNum() == 2)
+                            //        {
 
-                                        barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+                            //            barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeightCamera2, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
 
-                                    }
-                                    else
-                                    {
+                            //        }
+                            //        else
+                            //        {
 
-                                        barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
+                            //            barrel.transform.localEulerAngles = new Vector3(barrel.transform.localEulerAngles.x + verticalBarrelMoveWeight, barrel.transform.localEulerAngles.y, barrel.transform.localEulerAngles.z);
 
-                                    }
-                                }
-                                else
-                                {
-                                    Vertical();
-                                }
-                            }
+                            //        }
+                            //    }
+                            //    else
+                            //    {
+                            //        Vertical();
+                            //    }
+                            //}
                         }
                     }
                 }
@@ -1352,6 +1794,7 @@ public class Tank : MonoBehaviour
             case 2:
                 break;
         }
+        */
     }
 
     void Launch()
