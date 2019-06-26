@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((gameObject != null && !particleJudge && gameObject.transform.position.y <= .6f) || collisionWithTarget)
+        if ((gameObject != null && !particleJudge && gameObject.transform.position.y <= .8f) || collisionWithTarget)
         {
             Debug.Log("Explosion");
             Explosion();
