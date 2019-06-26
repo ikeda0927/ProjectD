@@ -60,7 +60,7 @@ public class Tank : MonoBehaviour
 
         body = gameObject.transform.Find("Body").gameObject;
 
-        bulletPrefab = Resources.Load("Bullet3") as GameObject;
+        bulletPrefab = Resources.Load("Bullet4") as GameObject;
         battery = gameObject.transform.Find("Battery").gameObject;
         barrel = gameObject.transform.Find("Battery/Barrel1").gameObject;
         bomb = gameObject.transform.Find("Battery/Barrel1/Barrel2/Barrel3/Bomb").gameObject;
