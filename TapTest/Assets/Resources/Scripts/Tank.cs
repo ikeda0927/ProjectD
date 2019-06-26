@@ -971,6 +971,7 @@ public class Tank : MonoBehaviour
                     //screenPositionNum0 = 3;
                 }
                 break;
+            case TouchPhase.Stationary:
             case TouchPhase.Moved:
                 int spns = screenPositionsNumSet[touch.fingerId];
                 switch (spns)

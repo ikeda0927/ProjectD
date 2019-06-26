@@ -36,4 +36,19 @@ public class CameraContoroler : MonoBehaviour
     {
         return cameraNum;
     }
+    public void ChangeView()
+    {
+        if (cameraNum == 1)
+        {
+            camera1.enabled = false;
+            camera2.enabled = true;
+            cameraNum = 2;
+        }
+        else
+        {
+            cameraNum = 1;
+            camera1.enabled = true;
+            camera2.enabled = false;
+        }
+    }
 }
