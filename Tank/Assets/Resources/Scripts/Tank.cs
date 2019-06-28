@@ -22,7 +22,7 @@ public class Tank : MonoBehaviour
     static GameObject battery;
     static GameObject ballSetPosition;
     float radius = 5f;
-    public static int launchForce = 5000;
+    public static int launchForce = 7500;
     bool bulletJudge = true;
     const int BULLETWEIGHT = 20;
     int bulletWeight;
@@ -60,7 +60,7 @@ public class Tank : MonoBehaviour
 
         body = gameObject.transform.Find("Body").gameObject;
 
-        bulletPrefab = Resources.Load("Bullet3") as GameObject;
+        bulletPrefab = Resources.Load("Bullet6") as GameObject;
         battery = gameObject.transform.Find("Battery").gameObject;
         barrel = gameObject.transform.Find("Battery/Barrel1").gameObject;
         bomb = gameObject.transform.Find("Battery/Barrel1/Barrel2/Barrel3/Bomb").gameObject;

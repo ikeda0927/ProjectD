@@ -5,7 +5,7 @@ using UnityEngine;
 public class Trail : MonoBehaviour
 {
     // Start is called before the first frame update
-    static Transform target;
+    static GameObject target;
     [SerializeField] LineRenderer line;
 
     float maxTime = 5;
@@ -50,7 +50,7 @@ public class Trail : MonoBehaviour
 
         if (target == null)
         {
-            target = Tank.MakeBullet().transform;
+            target = Tank.MakeBullet();
             Debug.Log("target generated");
         }
         presposition = transform.position;
@@ -82,7 +82,7 @@ public class Trail : MonoBehaviour
     private void AddForce()
     {
         var rig = target.GetComponent<Rigidbody>();
-        //rig.AddRelativeForce(new Vector3(0, -1, 0) * power, ForceMode.Impulse);
+        //rig.AddRelativeForce(new Vector3(0, 1, 0) * power, ForceMode.Impulse);
         //rig.AddForce(new Vector3(1, 1, 0) * power, ForceMode.Impulse);
         rig.AddExplosionForce(power, Tank.GetExplosionPosition(), 5f);
     }
@@ -95,13 +95,13 @@ public class Trail : MonoBehaviour
         while (time < maxTime)
         {
 
-            if (target.position.y > 0.6f)
+            if (target.transform.position.y > 0.6f)
             {
                 Physics.Simulate(deltaTime);
                 time += deltaTime;
 
-                positions.Add(target.position);
-                lastPositions = target.position;
+                positions.Add(target.transform.position);
+                lastPositions = target.transform.position;
             }
             else
             {
@@ -114,9 +114,9 @@ public class Trail : MonoBehaviour
     {
         if (target != null)
         {
-            target.position = Tank.GetBallSetPosition();
-            target.rotation = Tank.GetBarrelRotation();
-            var rig = target.GetComponent<Rigidbody>();
+            target.transform.position = Tank.GetBallSetPosition();
+            target.transform.rotation = Tank.GetBarrelRotation();
+            var rig = target.transform.GetComponent<Rigidbody>();
             rig.velocity = Vector3.zero;
             rig.angularVelocity = Vector3.zero;
         }
@@ -128,6 +128,6 @@ public class Trail : MonoBehaviour
         Tank.SetTanKinematic(b);
         Target.SetKinematic(b);
         if (!b && target != null)
-            Destroy(target.gameObject);
+            Destroy(target.transform.gameObject);
     }
 }
