@@ -705,7 +705,7 @@ Transform:
   m_LocalScale: {x: 1.5, y: 0.2, z: 1.5}
   m_Children: []
   m_Father: {fileID: 1597666248}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &376388699
 CapsuleCollider:
@@ -6642,7 +6642,7 @@ GameObject:
   - component: {fileID: 712029678}
   m_Layer: 0
   m_Name: EnemyShotShell
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6675,7 +6675,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyShellPrefab: {fileID: 1948937961398475465, guid: 484cb932b5814c34d89f7bc0fceb26d9,
     type: 3}
-  shotSpeed: 0
+  shotSpeed: 300
   shotSound: {fileID: 0}
 --- !u!135 &712029678
 SphereCollider:
@@ -8865,7 +8865,7 @@ Transform:
   m_LocalScale: {x: 1.2, y: 1, z: 1.2}
   m_Children: []
   m_Father: {fileID: 1597666248}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1334775914
 SphereCollider:
@@ -15029,7 +15029,7 @@ Transform:
   m_LocalScale: {x: 0.35, y: 0.50000024, z: 0.3500002}
   m_Children: []
   m_Father: {fileID: 1597666248}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!136 &1572012812
 CapsuleCollider:
@@ -15192,7 +15192,7 @@ GameObject:
   - component: {fileID: 1597666248}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15205,12 +15205,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1597666247}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -140, y: 1.28, z: 135}
+  m_LocalPosition: {x: -104.5, y: 1.28, z: 139.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1572012811}
   - {fileID: 376388698}
   - {fileID: 1334775913}
+  - {fileID: 1572012811}
   - {fileID: 712029676}
   m_Father: {fileID: 0}
   m_RootOrder: 8
@@ -17300,7 +17300,7 @@ GameObject:
   - component: {fileID: 1221450015644034}
   m_Layer: 0
   m_Name: Tank
-  m_TagString: enemy
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17438,8 +17438,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 8, y: 0, z: 8}
-  m_Center: {x: 1, y: 0.1, z: -1.2}
+  m_Size: {x: 8, y: 2.5, z: 8}
+  m_Center: {x: 1, y: 0.7, z: -1.2}
 --- !u!1 &1226052739063252
 GameObject:
   m_ObjectHideFlags: 0
