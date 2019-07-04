@@ -126,7 +126,7 @@ public class Trail : MonoBehaviour
     {
         judge = b;
         Tank.SetTanKinematic(b);
-        Target.SetKinematic(b);
+        //Target.SetKinematic(b);
         if (!b && target != null)
             Destroy(target.transform.gameObject);
     }

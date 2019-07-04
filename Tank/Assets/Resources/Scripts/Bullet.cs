@@ -19,7 +19,8 @@ public class Bullet : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.tag == "Target")
+        //if (collision.transform.tag == "Target")
+        if (collision.transform.tag != "Battery")
         {
             collisionWithTarget = true;
         }
@@ -28,7 +29,7 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((gameObject != null && !particleJudge && gameObject.transform.position.y <= .6f) || collisionWithTarget)
+        if ((gameObject != null && !particleJudge && gameObject.transform.position.y <= .8f) || collisionWithTarget)
         {
             Debug.Log("Explosion");
             Explosion();

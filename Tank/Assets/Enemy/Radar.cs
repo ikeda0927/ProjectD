@@ -12,23 +12,13 @@ public class Radar : MonoBehaviour
     {
 
         // もしも他のオブジェクトに「Player」というTag（タグ）が付いていたならば（条件）
-        //if (other.CompareTag("Player"))
+        //if (other.CompareTag("Battery"))
         //{
-
+            Debug.Log("Battery");
             // 「root」を使うと「親（最上位の親）」の情報を取得することができる（ポイント）
             // LookAt()メソッドは指定した方向にオブジェクトの向きを回転させることができる（ポイント）
-            //transform.root.LookAt(target);
-
-            //tankのtransformを取得
-            Transform tanktransform = GameObject.Find("Tank").transform;
-
-            // カメラに向かう方向を計算
-            Vector3 forward = tanktransform.transform.position - transform.position;
-            if (forward != Vector3.zero) // 零ベクトルでない
-            {
-                // カメラの向きを正面とする回転を作成して適用
-                transform.rotation = Quaternion.LookRotation(forward);
-            }
+            transform.root.LookAt(target);
         //}
     }
+   
 }
