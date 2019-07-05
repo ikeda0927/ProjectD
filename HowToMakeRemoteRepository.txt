@@ -1,9 +1,0 @@
-自分のPCにローカルリポジトリを作る方法
-まず適当なフォルダを作り、名前をprojectdにします。
-コマンドプロンプトを開いて、projectdのフォルダに移動します。
-git init
-を実行します。
-次に
-git remote add origin https://github.com/ikeda0927/ProjectD.git
-を実行します。
-これでGitHub上のリモートリポジトリと、自分のPCのローカルリポジトリがつながったと思います。
