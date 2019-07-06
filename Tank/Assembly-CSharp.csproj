@@ -69,8 +69,9 @@
     <Compile Include="Assets\EffectExamples\Shared\Scripts\ParticleExamples.cs" />
     <Compile Include="Assets\EffectExamples\Shared\Scripts\ParticleMenu.cs" />
     <Compile Include="Assets\EffectExamples\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Enemy\Chase.cs" />
+    <Compile Include="Assets\Enemy\DestroyObject.cs" />
     <Compile Include="Assets\Enemy\EnemyShotShell.cs" />
-    <Compile Include="Assets\Enemy\missRadar.cs" />
     <Compile Include="Assets\Enemy\Radar.cs" />
     <Compile Include="Assets\Resources\Rigidbody\TR_Explosion.cs" />
     <Compile Include="Assets\Resources\Scripts\Base.cs" />

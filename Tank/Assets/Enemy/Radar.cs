@@ -12,13 +12,13 @@ public class Radar : MonoBehaviour
     {
 
         // もしも他のオブジェクトに「Player」というTag（タグ）が付いていたならば（条件）
-        //if (other.CompareTag("Battery"))
-        //{
+        if (other.CompareTag("Battery"))
+        {
             Debug.Log("Battery");
             // 「root」を使うと「親（最上位の親）」の情報を取得することができる（ポイント）
             // LookAt()メソッドは指定した方向にオブジェクトの向きを回転させることができる（ポイント）
             transform.root.LookAt(target);
-        //}
+        }
     }
    
 }

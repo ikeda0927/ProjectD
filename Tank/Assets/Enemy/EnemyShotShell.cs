@@ -6,6 +6,7 @@ public class EnemyShotShell : MonoBehaviour {
 
 	public GameObject enemyShellPrefab;
 	public float shotSpeed;
+    public int shotintarval;
 	public AudioClip shotSound;
 	private float shotIntarval;
 
