@@ -1,6 +1,6 @@
 ## Save and Recovery ##
 
-Resources直下のmagic_ring Prefabがセーブ機能または回復機能のprefabです。  
+Resources直下のSaveAndRecoveryPrefabがセーブ機能または回復機能のprefabです。  
 
 使い方はprefabをドラッグ&ドロップで置きたい場所に持っていき、
 + Only Save
